@@ -1,0 +1,17 @@
+[package]
+name = "net"
+version = "0.1.0"
+description = ""
+authors = ["hilorioze"]
+license = "MIT"
+readme = "README.md"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[target.'cfg(target_os = "windows")'.dependencies]
+winapi = { version = "0.3", features = ["winuser"] }
+
+[profile.release]
+strip = true     # Strip symbols from binary*
+panic = 'abort'  # Abort on panic

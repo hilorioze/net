@@ -1,0 +1,36 @@
+name: Artifacts
+
+on:
+  - push
+  - pull_request
+  - workflow_dispatch
+
+
+jobs:
+  build-and-release:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: install stable toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          override: true
+
+      - name: cache deps
+        uses: Swatinem/rust-cache@v2
+        with:
+          cache-on-failure: true
+
+      - name: build
+        run: cargo build --release
+
+      - name: upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: net-${{ runner.os }}
+          path: ./target/release/net.exe
+          if-no-files-found: error
